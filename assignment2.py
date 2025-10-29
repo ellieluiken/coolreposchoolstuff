@@ -23,15 +23,21 @@ shopping_cart = [
 
 
 def display_list():
-    cursed_antiques.sort()
     for i, name in enumerate(cursed_antiques, start=1):
         print(f'Item {i}: {name}')
      
+print("""Welcome to The Cursed Antique Shop!
 
+    - Buy an item (enter 'buy')
+    - Remove antique from shopping cart (enter 'remove')
+    - Sort antiques (enter 'sort')
+    - List items (enter 'list')
+    - View cart (enter 'cart')
+    - Quit (enter 'quit')""")
 
 while True:
-
-    user_input = input("What do you want to do (buy/list/cart/remove/quit)? ").casefold()
+    
+    user_input = input("What do you want to do? ").casefold()
     match user_input:
         
         case 'quit':
@@ -57,15 +63,16 @@ while True:
                     add_input = input("What item would you like to buy? ")
 
                     try:
-                        if add_input in cursed_antiques:
+                        if add_input not in shopping_cart:
                             shopping_cart.append(add_input)
                             cursed_antiques.remove(add_input)
                             print(f'{add_input} has been added to the shopping cart!')
-                        elif add_input in shopping_cart:
+                        elif add_input not in cursed_antiques:
                             print("Item is already in the shopping cart. Please try again.")
 
                     except ValueError:
                             print("That item does not exist. Please try again.")
+                            shopping_cart.remove(add_input)
                     
 
         case 'remove':
@@ -95,13 +102,33 @@ while True:
               display_list()
 
         case 'cart':
-              print("Your shopping cart contains: ")
-              shopping_cart.sort()
-              for i, name in enumerate(shopping_cart, start=1):
-                    print(f'Item {i}: {name}')
+            print("Your shopping cart contains: ")
+            for i, name in enumerate(shopping_cart, start=1):
+                print(f'Item {i}: {name}')
+              
 
         case 'sort':
-              cursed_antiques.sort()
+            sort_input = input("Would you like to sort the antique list or the antiques in your cart? (list/cart): ").casefold()
+            abc_input = input("Would you like to sort in alphabetical order or reverse alphabetical order? (a/z): ").casefold()
+            match sort_input:
+                case 'list':
+                    match abc_input:
+                        case 'z':
+                            cursed_antiques.sort(reverse=True)
+                            print("Antiques have been sorted in reverse alphabetical order.")
+                        case 'a':
+                            cursed_antiques.sort()
+                            print("Antiques have been sorted in alphabetical order.")
+                case 'cart':
+                    match abc_input:
+                        case 'z':
+                            shopping_cart.sort(reverse=True)
+                            print("Your cart has been sorted in reverse alphabetical order.")
+                        case 'a':
+                            shopping_cart.sort()
+                            print("Your cart has been sorted in alphabetical order.")
+                              
+                           
 
 
         case _:
